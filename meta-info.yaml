@@ -31,6 +31,10 @@ host_requirements:
       protocol: tcp
       action: accept
       ipv6: true
+    - ports: 9000
+      protocol: tcp
+      action: accept
+      ipv6: true
 docker_run_parameters:
   hostname: host_fqdn
   privileged: true
@@ -43,3 +47,6 @@ docker_run_parameters:
       - "50070:50070"
       - "8088:8088"
       - "18080:18080"
+      - "9000:9000"
+  ssh_server: true
+  ssh_client: true

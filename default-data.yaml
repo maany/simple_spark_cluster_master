@@ -1,4 +1,4 @@
-simple-spark-cluster-master-expected-from-site-level-config:
+spark-hadoop-master-expected-from-site-level-config:
     spark_hadoop_master_default_var_spark_event_log_enabled: false
     spark_hadoop_master_default_var_spark_event_log_dir: false
     spark_hadoop_master_default_var_hdfs_dfs_replication: 1

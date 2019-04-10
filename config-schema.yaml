@@ -7,10 +7,10 @@ expected-from-site-level-config:
     spark_history_fs_log_directory: { type: str(), required: true, use_default: false}
     spark_history_fs_update_interval: { type: str(), required: true, use_default: false}
     hdfs_dfs_replication: { type: int(), required: true, use_default: true}
-    yarn.app.mapreduce.am.resource.mb: { type: int(), required: true, use_default: true}
-    mapreduce.map.memory.mb: { type: int(), required: true, use_default: true}
-    mapreduce.reduce.memory.mb: { type: int(), required: true, use_default: true}
-    yarn.nodemanager.resource.memory-mb: { type: int(), required: true, use_default: true}
-    yarn.scheduler.maximum-allocation-mb: { type: int(), required: true, use_default: true}
-    yarn.scheduler.minimum-allocation-mb: { type: int(), required: true, use_default: true}
+    yarn_app_mapreduce_am_resource_mb: { type: int(), required: true, use_default: true}
+    mapreduce_map_memory_mb: { type: int(), required: true, use_default: true}
+    mapreduce_reduce_memory_mb: { type: int(), required: true, use_default: true}
+    yarn_nodemanager_resource_memory_mb: { type: int(), required: true, use_default: true}
+    yarn_scheduler_maximum_allocation_mb: { type: int(), required: true, use_default: true}
+    yarn_scheduler_minimum_allocation_mb: { type: int(), required: true, use_default: true}
    

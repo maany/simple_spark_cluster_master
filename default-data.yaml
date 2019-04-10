@@ -1,0 +1,10 @@
+spark-hadoop-master-expected-from-site-level-config:
+    spark_hadoop_master_default_var_spark_event_log_enabled: false
+    spark_hadoop_master_default_var_spark_event_log_dir: false
+    spark_hadoop_master_default_var_hdfs_dfs_replication: 1
+    spark_hadoop_master_default_var_yarn.app.mapreduce.am.resource.mb: 128
+    spark_hadoop_master_default_var_mapreduce.map.memory.mb: 64
+    spark_hadoop_master_default_var_mapreduce.reduce.memory.mb: 64
+    spark_hadoop_master_default_var_yarn.nodemanager.resource.memory-mb: 384
+    spark_hadoop_master_default_var_yarn.scheduler.maximum-allocation-mb: 384
+    spark_hadoop_master_default_var_yarn.scheduler.minimum-allocation-mb: 32

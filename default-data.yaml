@@ -1,6 +1,6 @@
 spark-hadoop-master-expected-from-site-level-config:
     spark_hadoop_master_default_var_spark_event_log_enabled: false
-    spark_hadoop_master_default_var_spark_event_log_dir: false
+    spark_hadoop_master_default_var_spark_event_log_dir: spark-logs
     spark_hadoop_master_default_var_hdfs_dfs_replication: 1
     spark_hadoop_master_default_var_yarn_app_mapreduce_am_resource_mb: 512
     spark_hadoop_master_default_var_mapreduce_map_memory_mb: 256

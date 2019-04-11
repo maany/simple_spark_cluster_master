@@ -1,16 +1,40 @@
 #!/bin/bash
-docker build -t simple_spark_hadoop_master .
-docker stop simple_spark_hadoop_master && docker rm simple_spark_hadoop_master
-docker run -itd \
-    --name simple_spark_hadoop_master \
-    simple_spark_hadoop_master \
-    /bin/bash
 
-docker exec -it simple_spark_hadoop_master bash
+echo "Copy Hadoop conf files to /root/hadoop/etc/hadoop/"
+cp /etc/simple-grid/config/hadoop-env.sh /root/hadoop/etc/hadoop/
+cp /etc/simple-grid/config/core-site.xml /root/hadoop/etc/hadoop/
+cp /etc/simple-grid/config/hdfs-site.xml /root/hadoop/etc/hadoop/
+cp /etc/simple-grid/config/mapred-site.xml /root/hadoop/etc/hadoop/
+cp -f /etc/simple-grid/config/yarn-site.xml /root/hadoop/etc/hadoop/
+cp -f /etc/simple-grid/config/slaves /root/hadoop/etc/hadoop/
 
-export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.201.b09-2.el7_6.x86_64/jre
-export PATH=/root/hadoop/spark/bin:/root/hadoop/bin:/root/hadoop/sbin:/usr/sue/sbin:/usr/sue/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-export HADOOP_CONF_DIR=/root/hadoop/etc/hadoop
-export SPARK_HOME=/root/hadoop/spark
-export LD_LIBRARY_PATH="/root/hadoop/lib/native:${LD_LIBRARY_PATH}"    
-    
+echo "Copying spark config files"
+cp /etc/simple-grid/config/spark-defaults.conf /root/hadoop/spark/conf/
+
+cat /etc/simple-grid/config/hadoop_env.sh >> ~/.bashrc
+source ~/.bashrc
+
+echo "Formatting HDFS"
+hdfs namenode -format
+
+echo "Starting HDFS"
+start-dfs.sh
+
+echo "Start YARN"
+start-yarn.sh
+
+echo "HDFS report"
+hdfs dfsadmin -report
+
+echo "YARN nodes"
+yarn node -list
+
+echo "Initializing the Spark Hadoop Master Container"
+
+echo "Creating spark-logs hdfs directory"
+hdfs dfs -mkdir /spark-logs
+
+echo "Start Spark History Server"
+$SPARK_HOME/sbin/start-history-server.sh
+
+echo "All Done!"

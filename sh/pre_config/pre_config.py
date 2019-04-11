@@ -216,7 +216,19 @@ def get_slave_file_content(data, execution_id):
         for dns_info in data['dns']:
             if dns_info['execution_id'] == execution_id:
                 slaves.append(dns_info['container_fqdn'])
+    return "\n".join(slaves)
 
+def get_slave_ip_file_content(data, execution_id):
+    execution_ids = []
+    slaves = []
+    lightweight_components = data['lightweight_components']
+    for lightweight_component in lightweight_components:
+        if lightweight_component['type'] == "spark_hadoop_worker":
+            execution_ids.append(lightweight_component['execution_id'])
+    for execution_id in execution_ids:
+        for dns_info in data['dns']:
+            if dns_info['execution_id'] == execution_id:
+                slaves.append(dns_info['container_ip'])
     return "\n".join(slaves)
 
 def get_spark_env_file_content():
@@ -238,6 +250,10 @@ if __name__ == "__main__":
 
     slave_file = open("{output_dir}/slaves".format(output_dir=output_dir), 'w')
     slave_file.write(get_slave_file_content(data, execution_id))
+    slave_file.close()
+
+    slave_file = open("{output_dir}/slaves_ip".format(output_dir=output_dir), 'w')
+    slave_file.write(get_slave_ip_file_content(data, execution_id))
     slave_file.close()
 
     core_site_xml = open("{output_dir}/core-site.xml".format(output_dir=output_dir), 'w')

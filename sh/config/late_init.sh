@@ -2,6 +2,9 @@
 echo "Copy ssh host keys for workers. Should be in a for loop:"
 ssh-keyscan -t rsa spark_hadoop_worker_localhost01_1.cern.ch >> /etc/ssh/ssh_known_hosts
 
+ssh-keyscan simple-lc01.cern.ch >> /etc/ssh/ssh_known_hosts
+ssh-keyscan 0.0.0.0 >> /etc/ssh/ssh_known_hosts
+
 echo "Formatting HDFS"
 hdfs namenode -format
 

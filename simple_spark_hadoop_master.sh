@@ -29,7 +29,7 @@ sudo docker run -itd \
 
 
 ### INIT EVENT ######
-sudo docker exec -t simple_spark_hadoop_master /bin/bash -c '/etc/simple_grid/config/init.sh'
+#sudo docker exec -t simple_spark_hadoop_master /bin/bash -c '/etc/simple_grid/config/init.sh'
 
 #### POST INIT HOOKS ######
 sudo docker exec -it simple_spark_hadoop_master bash

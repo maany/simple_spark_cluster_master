@@ -242,7 +242,7 @@ if __name__ == "__main__":
     execution_id = args['execution_id']
     site_config_filename =  args['augmented_site_level_config_file']
     site_config = open(site_config_filename, 'r')
-    data = yaml.load(site_config)
+    data = yaml.load(site_config, Loader=yaml.FullLoader)
     output_dir = args['output_dir']
     spark_default_config_file = open("{output_dir}/spark-defaults.conf".format(output_dir=output_dir), 'w')
     spark_default_config_file.write(get_spark_hadoop_default_config_file_content(data, execution_id))

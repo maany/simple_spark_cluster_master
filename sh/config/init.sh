@@ -20,6 +20,15 @@ hdfs namenode -format
 
 echo "Adding known_hosts"
 
+touch /root/.shosts
+
+file="/etc/simple_grid/config/slaves"
+for var in $(cat $file)
+do
+echo "$var root">> /root/.shosts
+echo " $var"
+done
+
 file="/etc/simple_grid/config/slaves_ip"
 for var in $(cat $file)
 do

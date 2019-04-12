@@ -24,7 +24,7 @@ cat /etc/simple_grid/config/spark_hadoop_env.sh >> ~/.bashrc
 source ~/.bashrc
 
 echo "Copy ssh host keys for workers. Should be in a for loop:"
-file="/etc/simple_grid/config/slaves_ip"
+file="/etc/simple_grid/config/slaves"
 for var in $(cat $file)
 do
 ssh-keyscan -t rsa $var >> /etc/ssh/ssh_known_hosts

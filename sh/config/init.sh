@@ -31,7 +31,7 @@ ssh-keyscan -t rsa $var >> /etc/ssh/ssh_known_hosts
 echo " $var"
 done
 
-ssh-keyscan simple-lc01.cern.ch >> /etc/ssh/ssh_known_hosts
+ssh-keyscan $(hostname) >> /etc/ssh/ssh_known_hosts
 ssh-keyscan 0.0.0.0 >> /etc/ssh/ssh_known_hosts
 
 echo "Formatting HDFS"

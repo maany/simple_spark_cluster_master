@@ -3,7 +3,7 @@
 <configuration>
 	<property>
 		<name>yarn.acl.enable</name>
-		<value>simple-lc02.cern.ch</value>
+		<value>simple_spark_cluster_master.cern.ch</value>
 	</property>
 	<property>
 		<name>yarn.nodemanager.aux-services</name>

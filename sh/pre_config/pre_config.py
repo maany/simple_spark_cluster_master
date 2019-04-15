@@ -129,9 +129,16 @@ def get_yarn_site_xml_content(data, execution_id):
     yarn_acl_enable['property'] = []
     yarn_acl_enable_property = yarn_acl_enable['property']
     yarn_acl_enable_property.append({'name': "yarn.acl.enable"})
-    fqdn = current_lightweight_component['deploy']['node']
-    yarn_acl_enable_property.append({'value': fqdn})
+    yarn_acl_enable_property.append({'value': '0'})
     yarn_site_content_array.append(yarn_acl_enable)
+    ## yarn.resourcemanager.hostname
+    yarn_resourcemanager_hostname = {}
+    yarn_resourcemanager_hostname['property'] = []
+    yarn_resourcemanager_hostname_property = yarn_resourcemanager_hostname['property']
+    yarn_resourcemanager_hostname_property.append({'name': 'yarn.resourcemanager.hostname'})
+    fqdn = current_lightweight_component['deploy']['node']
+    yarn_resourcemanager_hostname_property.append({'value': fqdn})
+    yarn_site_content_array.append(yarn_resourcemanager_hostname)
     ## yarn.nodemanager.aux-services
     yarn_nodemanager_aux_services = {}
     yarn_nodemanager_aux_services['property'] = []

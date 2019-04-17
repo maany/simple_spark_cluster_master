@@ -129,9 +129,16 @@ def get_yarn_site_xml_content(data, execution_id):
     yarn_acl_enable['property'] = []
     yarn_acl_enable_property = yarn_acl_enable['property']
     yarn_acl_enable_property.append({'name': "yarn.acl.enable"})
-    fqdn = current_lightweight_component['deploy']['node']
-    yarn_acl_enable_property.append({'value': fqdn})
+    yarn_acl_enable_property.append({'value': '0'})
     yarn_site_content_array.append(yarn_acl_enable)
+    ## yarn.resourcemanager.hostname
+    yarn_resourcemanager_hostname = {}
+    yarn_resourcemanager_hostname['property'] = []
+    yarn_resourcemanager_hostname_property = yarn_resourcemanager_hostname['property']
+    yarn_resourcemanager_hostname_property.append({'name': 'yarn.resourcemanager.hostname'})
+    fqdn = current_lightweight_component['deploy']['node']
+    yarn_resourcemanager_hostname_property.append({'value': fqdn})
+    yarn_site_content_array.append(yarn_resourcemanager_hostname)
     ## yarn.nodemanager.aux-services
     yarn_nodemanager_aux_services = {}
     yarn_nodemanager_aux_services['property'] = []
@@ -242,7 +249,7 @@ if __name__ == "__main__":
     execution_id = args['execution_id']
     site_config_filename =  args['augmented_site_level_config_file']
     site_config = open(site_config_filename, 'r')
-    data = yaml.load(site_config)
+    data = yaml.load(site_config, Loader=yaml.FullLoader)
     output_dir = args['output_dir']
     spark_default_config_file = open("{output_dir}/spark-defaults.conf".format(output_dir=output_dir), 'w')
     spark_default_config_file.write(get_spark_hadoop_default_config_file_content(data, execution_id))

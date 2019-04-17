@@ -1,5 +1,5 @@
 spark-hadoop-master-expected-from-site-level-config:
-  spark_hadoop_master_default_var_spark_event_log_enabled: false
+  spark_hadoop_master_default_var_spark_event_log_enabled: true
   spark_hadoop_master_default_var_spark_event_log_dir: spark-logs
   spark_hadoop_master_default_var_hdfs_dfs_replication: 1
   spark_hadoop_master_default_var_yarn_app_mapreduce_am_resource_mb: 512
@@ -8,6 +8,8 @@ spark-hadoop-master-expected-from-site-level-config:
   spark_hadoop_master_default_var_yarn_nodemanager_resource_memory_mb: 1536
   spark_hadoop_master_default_var_yarn_scheduler_maximum_allocation_mb: 1536
   spark_hadoop_master_default_var_yarn_scheduler_minimum_allocation_mb: 128
+spark_hadoop_worker_runtime_variables:
+- spark-hadoop-master.cern.ch
 default_group_opssgm:
   gid: 46001
   name: opssgm
@@ -64,13 +66,21 @@ default_group_ops:
   gid: 45000
   name: ops
 default_group_alicesgm_name: alicesgm
+spark-hadoop-worker-expected-from-site-level-config:
+  spark_hadoop_worker_default_var_fs_default_name: spark-hadoop-master.cern.ch
+  spark_hadoop_worker_default_var_yarn_resource_manager_hostname: spark-hadoop-master.cern.ch
+  spark_hadoop_worker_default_var_hdfs_dfs_replication: 1
+  spark_hadoop_worker_default_var_yarn_app_mapreduce_am_resource_mb: 512
+  spark_hadoop_worker_default_var_mapreduce_map_memory_mb: 256
+  spark_hadoop_worker_default_var_mapreduce_reduce_memory_mb: 256
+  spark_hadoop_worker_default_var_yarn_nodemanager_resource_memory_mb: 1536
+  spark_hadoop_worker_default_var_yarn_scheduler_maximum_allocation_mb: 1536
+  spark_hadoop_worker_default_var_yarn_scheduler_minimum_allocation_mb: 128
 site_infrastructure:
-- fqdn: spark-master.cern.ch
-  ip_address: 188.184.95.231
-- fqdn: spark-worker.cern.ch
-  ip_address: 188.184.104.92
-- fqdn: spark-submit.cern.ch
-  ip_address: 188.185.82.126
+- fqdn: spark-hadoop-master.cern.ch
+  ip_address: 188.185.104.49
+- fqdn: spark-hadoop-worker.cern.ch
+  ip_address: 188.184.85.219
 default_pool_accounts_dteamsgm:
   base_name: sgmdtm
   initial_uid: 60501
@@ -119,6 +129,21 @@ default_group_dteam:
   gid: 2688
   name: dteam
 default_vo_generic_dn_server_secondary: /DC=ch/DC=cern/OU=computers/CN=lcg-voms2.cern.ch
+meta_info_spark-hadoop-worker:
+  component: spark-hadoop-worker
+  type: spark_hadoop_worker
+  version: 1.0.0
+  docker_hub_tag: ''
+  site_level_config_version: 1.0
+  default_var_prefix: spark_hadoop_worker_default_var
+  runtime_vars:
+  - spark_hadoop_worker_runtime_var_spark_hadoop_master_fqdn
+  docker_run_parameters:
+    hostname: container_fqdn
+    privileged: true
+    detached: true
+    tty: true
+    ssh_client: true
 default_pool_account_ops:
   base_name: ops
   initial_uid: 45001
@@ -147,10 +172,10 @@ default_vo_generic_server_secondary: lcg-voms2.cern.ch
 lightweight_components:
 - name: spark-hadoop-master
   deploy:
-    node: spark-master.cern.ch
+    node: spark-hadoop-master.cern.ch
     container_count: 1
   config:
-    spark_history_fs_log_directory: hdfs://spark-master.cern.ch:9000/spark-logs
+    spark_history_fs_log_directory: hdfs://spark-hadoop-master.cern.ch:9000/spark-logs
     spark_executor_memory: 1g
     yarn_scheduler_maximum_allocation_mb: 1536
     spark_event_log_dir: spark-logs
@@ -161,48 +186,46 @@ lightweight_components:
     yarn_scheduler_minimum_allocation_mb: 128
     hdfs_dfs_replication: 1
     mapreduce_map_memory_mb: 256
-    spark_event_log_enabled: false
+    spark_event_log_enabled: true
     spark_yarn_am_memory: 512m
     mapreduce_reduce_memory_mb: 256
   repository_revision: master
+  supplemental_config:
+    spark-defaults.conf:
+    - spark.driver.cores 1
   repository_url: https://github.com/maany/simple_spark_cluster_master
   type: spark_hadoop_master
   container_count: 1
   id: 0
   execution_id: 0
-
 - name: spark-hadoop-worker
   deploy:
-    node: spark-worker.cern.ch
+    node: spark-hadoop-worker.cern.ch
     container_count: 1
   config:
-    spark_history_fs_log_directory: hdfs://spark-master.cern.ch:9000/spark-logs
-    spark_executor_memory: 1g
     yarn_scheduler_maximum_allocation_mb: 1536
-    spark_event_log_dir: spark-logs
-    spark_driver_memory: 1g
     yarn_app_mapreduce_am_resource_mb: 512
     yarn_nodemanager_resource_memory_mb: 1536
-    spark_history_fs_update_interval: 30s
     yarn_scheduler_minimum_allocation_mb: 128
     hdfs_dfs_replication: 1
     mapreduce_map_memory_mb: 256
-    spark_event_log_enabled: false
-    spark_yarn_am_memory: 512m
+    fs_default_name: spark-hadoop-master.cern.ch
+    yarn_resource_manager_hostname: spark-hadoop-master.cern.ch
     mapreduce_reduce_memory_mb: 256
   repository_revision: master
-  repository_url: https://github.com/maany/simple_spark_cluster_master
+  supplemental_config:
+    spark-defaults.conf:
+    - spark.driver.cores 1
+  repository_url: https://github.com/maany/simple_spark_cluster_worker
   type: spark_hadoop_worker
   container_count: 1
   id: 1
   execution_id: 1
 global_variables:
-- 188.184.95.231
-- spark-master.cern.ch
-- 188.184.104.92
-- spark-worker.cern.ch
-- 188.185.82.126
-- spark-submit.cern.ch
+- 188.185.104.49
+- spark-hadoop-master.cern.ch
+- 188.184.85.219
+- spark-hadoop-worker.cern.ch
 meta_info_spark-hadoop-master:
   component: spark-hadoop-master
   type: spark_hadoop_master
@@ -257,21 +280,15 @@ meta_info_spark-hadoop-master:
     ssh_client: true
 default_group_dteam_name: dteam
 dns:
-- container_fqdn: spark-master.cern.ch
-  host_fqdn: spark-master.cern.ch
-  host_ip: 188.184.104.25
+- container_fqdn: spark-hadoop-master.cern.ch
+  host_fqdn: spark-hadoop-master.cern.ch
+  host_ip: 188.185.104.49
   container_ip: 10.0.0.10
   type: spark_hadoop_master
   execution_id: 0
-- container_fqdn: WN-Pbs_lightweight_component02_1.cern.ch
-  host_fqdn: spark-worker.cern.ch
-  host_ip: 188.184.30.19
+- container_fqdn: spark_hadoop_worker_localhost01_1.cern.ch
+  host_fqdn: spark_hadoop_worker.cern.ch
+  host_ip: 188.184.85.219
   container_ip: 10.0.0.11
   type: spark_hadoop_worker
   execution_id: 1
-- container_fqdn: WN-Pbs_lightweight_component02_2.cern.ch
-  host_fqdn: lightweight_component02.cern.ch
-  host_ip: 188.184.30.19
-  container_ip: 10.0.0.12
-  type: worker_node
-  execution_id: 2

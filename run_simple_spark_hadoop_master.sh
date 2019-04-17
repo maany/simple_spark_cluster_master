@@ -1,6 +1,6 @@
 #!/bin/bash
 docker build -t simple_spark_cluster_master_sh_pre_config ./sh/pre_config/
-docker run -it -e "EXECUTION_ID=0" -v $(pwd)/:/component_repository simple_spark_cluster_master_sh_pre_config bash
+docker run -it -e "EXECUTION_ID=1" -v $(pwd)/:/component_repository simple_spark_cluster_master_sh_pre_config bash
 
 ### CLEANUP ####
 docker stop simple_spark_hadoop_master && docker rm simple_spark_hadoop_master

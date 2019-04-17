@@ -19,7 +19,7 @@ sudo docker run -itd \
     -p 9000:9000 \
     --net spark_tests \
     --ip 10.1.1.10 \
-    --add-host "spark_hadoop_worker_localhost01_1.cern.ch:10.1.1.11" \
+    --add-host "spark-hadoop-worker-localhost01-1.cern.ch:10.1.1.11" \
     --hostname $(hostname) \
     -v $(pwd)/sh/config:/etc/simple_grid/config \
     -v $(pwd)/augmented_site_level_config_file.yaml:/etc/simple_grid/augmented_site_level_config_file.yaml \

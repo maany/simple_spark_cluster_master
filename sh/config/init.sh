@@ -33,20 +33,23 @@ done
 
 ssh-keyscan $(hostname) >> /etc/ssh/ssh_known_hosts
 ssh-keyscan 0.0.0.0 >> /etc/ssh/ssh_known_hosts
-
 echo "IPTABLES config"
-iptables -A FORWARD -i eth1 -o eth0 -p tcp --syn --dport 8088 -m conntrack --ctstate NEW -j ACCEPT
-iptables -A FORWARD -i eth0 -o eth1 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
-iptables -A FORWARD -i eth1 -o eth0 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
-iptables -t nat -A PREROUTING -i eth1 -p tcp --dport 8088 -j DNAT --to-destination 10.1.1.10
-iptables -t nat -A POSTROUTING -o eth0 -p tcp --dport 8088 -d 10.1.1.10 -j SNAT --to-source 172.18.0.3
+#iptables -A FORWARD -i eth1 -o eth0 -p tcp --syn --dport 8088 -m conntrack --ctstate NEW -j ACCEPT
+#iptables -A FORWARD -i eth0 -o eth1 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+#iptables -A FORWARD -i eth1 -o eth0 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+#iptables -t nat -A PREROUTING -i eth1 -p tcp --dport 8088 -j DNAT --to-destination 10.1.1.10
+#iptables -t nat -A POSTROUTING -o eth0 -p tcp --dport 8088 -d 10.1.1.10 -j SNAT --to-source 172.18.0.3
 
 echo "Formatting HDFS"
 hdfs namenode -format
-
 echo "Starting HDFS"
 start-dfs.sh
-
+echo "HDFS files"
+hdfs dfs -mkdir -p books
+wget -O alice.txt https://www.gutenberg.org/files/11/11-0.txt
+wget -O holmes.txt https://www.gutenberg.org/ebooks/1661.txt.utf-8
+wget -O frankenstein.txt https://www.gutenberg.org/ebooks/84.txt.utf-8
+hdfs dfs -put alice.txt holmes.txt frankenstein.txt /user/root/books
 echo "Start YARN"
 start-yarn.sh
 

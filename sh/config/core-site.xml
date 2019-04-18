@@ -3,6 +3,6 @@
 <configuration>
 	<property>
 		<name>fs.default.name</name>
-		<value>hdfs://simple_spark_cluster_master.cern.ch:9000</value>
+		<value>hdfs://spark-hadoop-master.cern.ch:9000</value>
 	</property>
 </configuration>

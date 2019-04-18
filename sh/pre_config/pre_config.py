@@ -243,6 +243,21 @@ def get_spark_env_file_content():
     spark_env.append("export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.201.b09-2.el7_6.x86_64/jre")
     return "\n".join(spark_env)
 
+def get_run_script_env_file_content(data, execution_id):
+    slaves = []
+    dns = None
+    for dns_info in data['dns']:
+        if dns_info['execution_id'] == int(execution_id):
+            dns = dns_info
+        else:
+            slaves.append("{host}:{ip}".format(host=dns_info['container_fqdn'], ip=dns_info['container_ip']))
+    env = ["export CONTAINER_FQDN={host}".format(host=dns['container_fqdn']),
+           "export CONTAINER_IP={ip}".format(ip=dns['container_ip']),
+           "export PORTS=('8080' '7077' '6066' '50070' '18080' '9000')",
+           "export NODES=({nodes})".format(nodes=" ".join(slaves)),
+           ]
+    return '\n'.join(env)
+
 
 if __name__ == "__main__":
     args = parse_args()
@@ -282,3 +297,7 @@ if __name__ == "__main__":
     spark_env_file = open("{output_dir}/hadoop_env.sh".format(output_dir=output_dir), 'w')
     spark_env_file.write(get_spark_env_file_content())
     spark_env_file.close()
+
+    run_script_env = open("{output_dir}/run_script.env".format(output_dir=output_dir), 'w')
+    run_script_env.write(get_run_script_env_file_content(data, execution_id))
+    run_script_env.close()

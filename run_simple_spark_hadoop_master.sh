@@ -82,7 +82,7 @@ $DOCKER_RUN
 
 #### PRE INIT HOOKS #####
 
-
+echo "Please proceed with the init event by hand. Merci!"
 ### INIT EVENT ######
 #sudo docker exec -t simple_spark_hadoop_master /bin/bash -c '/etc/simple_grid/config/init.sh'
 

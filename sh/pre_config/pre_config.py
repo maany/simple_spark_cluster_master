@@ -253,7 +253,7 @@ def get_run_script_env_file_content(data, execution_id):
             slaves.append("{host}:{ip}".format(host=dns_info['container_fqdn'], ip=dns_info['container_ip']))
     env = ["export CONTAINER_FQDN={host}".format(host=dns['container_fqdn']),
            "export CONTAINER_IP={ip}".format(ip=dns['container_ip']),
-           "export PORTS=('8080' '7077' '6066' '8088' '50070' '18080' '9000')",
+           "export PORTS=('8080' '7077' '6066' '8088' '50070' '18080' '9000' '8888')",
            "export NODES=({nodes})".format(nodes=" ".join(slaves)),
            ]
     return '\n'.join(env)

@@ -17,7 +17,8 @@ sudo docker run -itd \
     -p 50070:50070 \
     -p 18080:18080 \
     -p 9000:9000 \
-    --net spark_tests \
+    -p 8888:8888 \
+    --net spark_swarm \
     --ip 10.1.1.10 \
     --add-host "spark-hadoop-worker-localhost01-1.cern.ch:10.1.1.11" \
     --hostname $(hostname) \
@@ -29,7 +30,7 @@ sudo docker run -itd \
 
 echo "Please proceed with the init event by hand. Merci!"
 ### INIT EVENT ######
-sudo docker exec -t simple_spark_hadoop_master /bin/bash -c '/etc/simple_grid/config/init.sh'
+#sudo docker exec -t simple_spark_hadoop_master /bin/bash -c '/etc/simple_grid/config/init.sh'
 
 #### POST INIT HOOKS ######
 sudo docker exec -it simple_spark_hadoop_master bash

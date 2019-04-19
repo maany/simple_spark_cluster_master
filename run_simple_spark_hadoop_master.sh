@@ -3,7 +3,7 @@
 #docker run -it -e "EXECUTION_ID=0" -v $(pwd)/:/component_repository simple_spark_cluster_master_sh_pre_config bash
 
 ### CLEANUP ####
-docker stop simple_spark_hadoop_master && docker rm simple_spark_hadoop_master
+docker stop ${CONTAINER_FQDN} && docker rm ${CONTAINER_FQDN}
 
 ### BOOT EVENT ###
 sudo docker build -t simple_spark_hadoop_master sh/
@@ -27,7 +27,7 @@ sudo docker run -itd \
 
 #### PRE INIT HOOKS #####
 
-
+echo "Please proceed with the init event by hand. Merci!"
 ### INIT EVENT ######
 sudo docker exec -t simple_spark_hadoop_master /bin/bash -c '/etc/simple_grid/config/init.sh'
 

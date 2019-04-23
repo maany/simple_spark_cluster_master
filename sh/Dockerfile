@@ -16,6 +16,35 @@ RUN wget https://www-eu.apache.org/dist/spark/spark-2.4.1/spark-2.4.1-bin-hadoop
     tar -xzf /root/spark-2.4.1-bin-hadoop2.7.tgz --directory /root/hadoop/ &&\
     mv /root/hadoop/spark-2.4.1-bin-hadoop2.7 /root/hadoop/spark
 
+# Update the system and install dependencies
+RUN yum update -y
+RUN yum install bzip2 -y
+
+# Install Jupyter Notebook using Anaconda
+RUN yum install -y wget vim
+RUN wget http://repo.continuum.io/archive/Anaconda3-4.1.1-Linux-x86_64.sh
+RUN chmod +x Anaconda3-4.1.1-Linux-x86_64.sh
+RUN printf '\nyes\n\nyes\n\n' | ./Anaconda3-4.1.1-Linux-x86_64.sh
+
+ENV PATH /root/anaconda3/bin:/usr/sue/sbin:/usr/sue/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+RUN jupyter notebook --generate-config
+RUN echo "c.NotebookApp.ip = '*'" >> /root/.jupyter/jupyter_notebook_config.py &&\
+    echo "c.NotebookApp.open_browser = False" >> /root/.jupyter/jupyter_notebook_config.py &&\
+    echo "c.NotebookApp.port = 8888" >> /root/.jupyter/jupyter_notebook_config.py
+
+# Install packages
+RUN conda install pyspark &&\
+    conda install seaborn &&\
+    conda install scipy &&\
+    conda install scikit-learn &&\
+    conda install matplotlib
+
+# Update conda
+RUN conda update -n base -c defaults conda
+
+# Upgrade pip and pandas
+RUN pip install -U pip
 
 ## ssh and net-tools
 RUN yum -y install iproute openssh openssh-server openssh-clients openssl-libs net-tools;yum clean all;
